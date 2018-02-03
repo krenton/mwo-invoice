@@ -7,13 +7,19 @@ import java.util.Map;
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
+	// TODO: implement lambdas for the totals
 	private Map<Product, Integer> products = new HashMap<Product, Integer>();
 
 	public void addProduct(Product product) {
-		// TODO: implement
+		products.put(product, 1);
 	}
 
 	public void addProduct(Product product, Integer quantity) {
+		
+		if (quantity == 0 || quantity < 0) {
+			throw new IllegalArgumentException("Product quantity cant be zero!");
+		}
+		
 		products.put(product, quantity);
 	}
 
@@ -29,10 +35,22 @@ public class Invoice {
 	}
 
 	public BigDecimal getTax() {
-		return null;
+		BigDecimal tax = new BigDecimal(0.00);
+		
+		for (Map.Entry<Product, Integer> entry : products.entrySet()) {			
+			tax = tax.add(entry.getKey().getPrice().multiply(entry.getKey().getTaxPercent()).multiply(new BigDecimal(entry.getValue())));
+		}
+		
+		return tax;
 	}
 
 	public BigDecimal getTotal() {
-		return null;
+		return this.getTax().add(this.getNetPrice());
 	}
+}
+
+interface Calculate {
+
+	BigDecimal bob();
+	
 }
