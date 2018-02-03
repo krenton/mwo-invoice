@@ -10,7 +10,16 @@ public abstract class Product {
 	private final BigDecimal taxPercent;
 
 	protected Product(String name, BigDecimal price, BigDecimal tax) {
-				
+		/*
+		 * alternatywna metoda do sprawdzenia czy imie jest puste moze byc name.isEmpty()
+		 * jednakze problem bedzie jesli wypiszemy to w kolejnosci:
+		 * 
+		 * if name.isEmpty() || name == null -> to kiedy name jest null to name.isEmpty rzuci null pointer exception, a chcemy otrzymac IllegalArgument!
+		 * 
+		 * bo nie mozna na nullu wywolywac metod, name.isEmpty to to samo co null.isEmpty
+		 * 
+		 * 
+		 */
 		if (name == null || name.equals("")) {
 			throw new IllegalArgumentException("Product name cant be null or empty string!");
 		}

@@ -15,7 +15,11 @@ import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
 
 public class InvoiceTest {
 	private Invoice invoice;
-
+	
+//adnotacja @before jest czyms w stylu prerequisitu: nie jest to test sam w sobie
+//ale jest to cos, co junit wykona sam przed wykonaniem kazdego testu
+// taki skrot jak przygotowac cos co jest wymagane w kazdym tescie
+	
 	@Before
 	public void createEmptyInvoiceForTheTest() {
 		invoice = new Invoice();
@@ -23,7 +27,7 @@ public class InvoiceTest {
 
 	@Test
 	public void testEmptyInvoiceHasEmptySubtotal() {
-		Assert.assertThat(BigDecimal.ZERO, Matchers.comparesEqualTo(invoice.getSubtotal()));
+		Assert.assertThat(BigDecimal.ZERO, Matchers.comparesEqualTo(invoice.getNetPrice()));
 	}
 
 	@Test
@@ -40,7 +44,7 @@ public class InvoiceTest {
 	public void testInvoiceHasTheSameSubtotalAndTotalIfTaxIsZero() {
 		Product taxFreeProduct = new TaxFreeProduct("Warzywa", new BigDecimal("199.99"));
 		invoice.addProduct(taxFreeProduct);
-		Assert.assertThat(invoice.getTotal(), Matchers.comparesEqualTo(invoice.getSubtotal()));
+		Assert.assertThat(invoice.getTotal(), Matchers.comparesEqualTo(invoice.getNetPrice()));
 	}
 
 	@Test
@@ -48,7 +52,7 @@ public class InvoiceTest {
 		invoice.addProduct(new TaxFreeProduct("Owoce", new BigDecimal("200")));
 		invoice.addProduct(new DairyProduct("Maslanka", new BigDecimal("100")));
 		invoice.addProduct(new OtherProduct("Wino", new BigDecimal("10")));
-		Assert.assertThat(new BigDecimal("310"), Matchers.comparesEqualTo(invoice.getSubtotal()));
+		Assert.assertThat(new BigDecimal("310"), Matchers.comparesEqualTo(invoice.getNetPrice()));
 	}
 
 	@Test
@@ -81,7 +85,7 @@ public class InvoiceTest {
 		invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
 		// 1000x pinezka - price: 10
 		invoice.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
-		Assert.assertThat(new BigDecimal("50"), Matchers.comparesEqualTo(invoice.getSubtotal()));
+		Assert.assertThat(new BigDecimal("50"), Matchers.comparesEqualTo(invoice.getNetPrice()));
 	}
 
 	@Test
