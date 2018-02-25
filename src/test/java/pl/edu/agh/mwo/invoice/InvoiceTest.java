@@ -104,4 +104,37 @@ public class InvoiceTest {
 	public void testInvoiceWithNegativeQuantity() {
 		invoice.addProduct(new DairyProduct("Zsiadle mleko", new BigDecimal("5.55")), -1);
 	}
+        
+        @Test
+	public void testInvoiceHasNumberGreaterThan0() {
+		int number = invoice.getNumber();
+		Assert.assertThat(number, Matchers.greaterThan(0));
+	}
+
+	@Test
+	public void testInvoicesHaveDifferentNumbers() {
+		int number1 = invoice.getNumber();
+		int number2 = new Invoice().getNumber();
+		Assert.assertNotEquals(number1, number2);
+	}
+	
+	@Test
+	public void testTheSameInvoiceHasTheSameNumber() {
+		Assert.assertEquals(invoice.getNumber(), invoice.getNumber());
+	}
+	
+	@Test
+	public void testThatSecondInvoiceHasGreaterNumber() {
+		int numberFirst = invoice.getNumber();
+		int numberSecond = new Invoice().getNumber();
+		Assert.assertThat(numberFirst, Matchers.lessThan(numberSecond));
+		
+	}
+        
+        @Test
+        public void testNumberAvailableOnPrint() {
+            String printed = invoice.preparePrint();
+            String number = String.valueOf(invoice.getNumber());
+            Assert.assertThat(printed, Matchers.containsString(number)); //hamcrest - dostarcza matchery do junit
+        }
 }

@@ -3,10 +3,12 @@ package pl.edu.agh.mwo.invoice;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
+        private final int number = new Random().nextInt(99999999) +1;
 	private Map<Product, Integer> products = new HashMap<Product, Integer>();
 
 	public void addProduct(Product product) {
@@ -41,4 +43,12 @@ public class Invoice {
 		}
 		return totalGross;
 	}
+        
+        public int getNumber() {
+		return number;
+	}
+        
+        public String preparePrint() {           
+            return ""+this.getNumber();
+        }
 }
